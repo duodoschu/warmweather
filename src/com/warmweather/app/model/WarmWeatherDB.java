@@ -1,17 +1,18 @@
-package model;
+package com.warmweather.app.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import db.WarmWeatherOpenHelper;
+import com.warmweather.app.db.WarmWeatherOpenHelper;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.Contacts.Intents.Insert;
 
 public class WarmWeatherDB {
-	public static final String DB_NAME = "warm_WeatherDB";/*数据库名*/
+	
+	public static final String DB_NAME = "warm_WeatherDB";
 	public static final int VERSION = 1;
 	private static WarmWeatherDB warmWeatherDB;
 	private SQLiteDatabase db;
@@ -29,7 +30,7 @@ public class WarmWeatherDB {
 	}
 	
 	/* 将Province实例存储到数据库*/
-	public void savedProvince(Province province){
+	public void saveProvince(Province province){
 		if(province!=null){
 			ContentValues values = new ContentValues();
 			values.put("province_name", province.getProvinceName());
@@ -45,9 +46,9 @@ public class WarmWeatherDB {
 		if(cursor.moveToFirst()){
 			do{
 				Province province = new Province();
-				province.setId(cursor.getColumnIndex("Id"));
+				province.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				province.setProvinceName(cursor.getString(cursor.getColumnIndex("province_name")));
-				province.setProvinceCode(cursor.getString(cursor.getColumnIndex("pronvince_code")));
+				province.setProvinceCode(cursor.getString(cursor.getColumnIndex("province_code")));
 				list.add(province);
 			}while(cursor.moveToNext());	
 		}
@@ -58,12 +59,12 @@ public class WarmWeatherDB {
 		
 	}
 	
-	public void savedCity(City city){
+	public void saveCity(City city){
 		if(city!=null){
 			ContentValues values = new ContentValues();
 			values.put("city_name", city.getCityName());
 			values.put("city_code", city.getCityCode());
-			values.put("province_Id", city.getProvinceId());
+			values.put("province_id", city.getProvinceId());
 			db.insert("City", null, values);
 		}
 	}
@@ -76,7 +77,7 @@ public class WarmWeatherDB {
 		if(cursor.moveToFirst()){
 			do{
 				City city =new City();
-				city.setId(cursor.getColumnIndex("id"));
+				city.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				city.setCityName(cursor.getString(cursor.getColumnIndex("city_name")));
 				city.setCityCode(cursor.getString(cursor.getColumnIndex("city_code")));
 				city.setProvinceId(provinceId);
@@ -89,12 +90,12 @@ public class WarmWeatherDB {
 		return list;
 	}
 	
-	public void savedCounty(County county){
+	public void saveCounty(County county){
 		if(county!=null){
 			ContentValues values = new ContentValues();
 			values.put("county_name", county.getCountyName());
 			values.put("county_code", county.getCountyCode());
-			values.put("city_Id", county.getCityId());
+			values.put("city_id", county.getCityId());
 			db.insert("County", null, values);
 		}
 	}
@@ -107,7 +108,7 @@ public class WarmWeatherDB {
 				if(cursor.moveToFirst()){
 			do{
 				County county =new County();
-				county.setId(cursor.getColumnIndex("id"));
+				county.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				county.setCountyName(cursor.getString(cursor.getColumnIndex("county_name")));
 				county.setCountyCode(cursor.getString(cursor.getColumnIndex("county_code")));
 				county.setCityId(cityId);
